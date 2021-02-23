@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>GitHub Users</title>
+  <style>
+    body {
+        max-width: 440px;
+    }
+    img {
+        padding-right: 299px; 
+        width: 299px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2 id=title></h2>
+<input type=text id=usr value=maeyler onChange="readUser()">
+<p id=out></p>
+<hr />
+
+<script>
+"use strict";
+function error(t) {
+    out.style.color = 'red'
+    out.innerText = t; throw t
+}
+async function toJSON(url) {
+    let r = await fetch(url)
+    if (!r.ok) error(r.statusText)
+    return r.json()
+}
+async function readUser() {
+    const BR = "<BR>", 
+      URL = "https://api.github.com/users/"
+    let u = await toJSON(URL+usr.value)
+    if (!u || !u.login) 
+      error(usr.value+' not found')
+    //u.login is the same as usr.value
+    out.style.color = ''
+    out.innerHTML = ''
+    //start with a tiny image
+    let i = document.createElement("img")
+    i.src = u.avatar_url
+    i.align = "left"
+    out.appendChild(i)
+    //add name and location
+    let s = (u.name? u.name : u.login)
+    out.innerHTML +=s.bold()+BR+u.login+BR+BR+u.company
+    +BR+u.location+BR; 
+
+    console.log(s+'\n'+u.name)
+    //add link to GitHub 
+    let a = document.createElement("a")
+    a.href = u.mail
+    a.target = "NewTab"
+    if(u.mail==null)
+        a.innerText = "not found"
+    else
+        a.innerText = u.mail
+    out.appendChild(a)
+    out.innerHTML += BR
+
+    //add link to GitHub
+    let m = document.createElement("a")
+    m.href = u.blog
+    m.target = "NewTab"
+    m.innerText = m
+    out.appendChild(m)
+    //add repo count
+    
+}
+    title.innerText = document.title
+    readUser()
+</script>
+
+</body>
+</html>

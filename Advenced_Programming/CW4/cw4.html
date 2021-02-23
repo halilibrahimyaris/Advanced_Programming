@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="../images/icon192.png">
+    <title>List of Objects </title>
+
+  <style>
+    body { max-width: 500px; }
+    #inp { white-space: pre-wrap; }
+    #sample { overflow-x: auto; }
+    #out { color: blue; }
+  </style>
+</head>
+
+<body>
+
+<h2 id=title></h2>
+<b>Text input &emsp;
+<input type=button id=convert value=Convert onclick="toList()">
+</b>
+<p>
+  <textarea id=inp onchange="convert.disabled=false" rows=10 cols=50 >
+  </textarea>
+</p>
+<b>JSON output</b>
+<pre id=out></pre>
+<hr />
+<b>Sample code</b>
+<pre id=sample></pre>
+<hr />
+<p>Ref: 
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters#Examples" 
+   target="NewTab">Rest Parameters</a>
+</p>
+<h3>
+  Açıklama:
+  Ben bu dünyanın en uzun binaları listesi üzerinde önce filter , map , sort, ve pop 
+  fonksiyonlarını kullandım. Filter ve map fonksiyonları bir arama yapmak için , 
+  sort() fonksiyonu sıralama yapmak için pop() ise son elemanı diziden atmak için kullanılmıştır.
+</h3>
+
+<h1>SCREEN SHOT</h1>
+<img src="ss.png"  width="1280" height="720" alt="Yapılan Islemler">
+
+
+<script>
+"use strict";
+function toList(str) {
+  function toObject(x) {
+    let b = {}
+    for (let [i,s] of x.split('\t').entries())
+      b[keys[i]] = (isNaN(s)? s : Number(s))
+    return b
+  }
+    if (str) inp.value = str
+    else str = inp.value
+    convert.disabled = true
+    let [d0, ...data] = str.split('\n')
+    let keys = d0.split('\t')
+    console.log("Keys:", keys)
+    let a = data.map(toObject)
+    out.innerText = JSON.stringify(a, '' ,2)
+    console.table(a)
+    return a
+}
+const PLANET = 
+`Name	Diam	Mass	Radius	Period
+Mercury	0.382	0.06	0.40	0.24
+Venus	0.949	0.82	0.72	0.62
+Earth	1.000	1.00	1.00	1.00
+Mars	0.532	0.11	1.52	1.88
+Jupiter	11.209	317.80	5.20	11.86
+Saturn	9.449	95.20	9.54	29.46
+Uranus	4.007	14.60	19.22	84.01
+Neptune	3.883	17.20	30.06	164.80`,
+
+MOUNT = `No	Bina	Uzunluk	 Ülke
+1.	Burj Kalifa	828 metre	Dubai, BAE
+2.	Shanghai Tower	632 metre	Şanghay, Çin
+3.	Abraj Al Bait	601 metre	Mekke, Suudi Arabistan
+4.	Ping An Finance Center	599 metre	Shenzhen, Çin
+5.	Lotte World Tower	554.5 metre	Seul, Güney Kore
+6.	One World Trade Center	541.3 metre	New York City, ABD
+7.	Guangzhou CTF Finance Center	530 metre	Guangzhou, Çin
+8.	ianjin CTF Finance Centre	530 metre	Tianjin, Çin
+9.	China Zun	528 metre	Pekin, Çin
+10.	Taipei 101	508 metre	Taipei, Tayvan
+11.	Shanghai World Financial Center	492 metre	Şanghay, Çin
+12.	International Commerce Centre	484 metre	Hong Kong, Çin
+13.	Lakhta Center	462 metre	St. Petersburg, Rusya`
+
+    title.innerText = document.title
+    sample.innerText = toList
+    inp.value = MOUNT
+    //toList()  //array of objects
+</script>
+
+</body>
+</html>

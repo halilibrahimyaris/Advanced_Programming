@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Event Handler </title>
+
+    <style>
+        /* CSS comment */
+        body {
+            max-width: 440px;
+        }
+
+        #url {
+            width: 190px;
+        }
+
+        span,
+        #url {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HTML comment: Modify all items marked xxx -->
+
+    <h2 id=title title="Modify xxx"></h2>
+
+    <p title="Battery Level">
+        Battery Level: <span id=level>??</span>
+    </p>
+    <p>
+        Battery Status:<span id=charge_status>??</span>
+    </p>
+    <h2>Online Status</h2>
+    <p title="Online Status">
+        <span id=online>??</span>
+    </p>
+    <h2>Keyboard</h2>
+    <p title="Keyboard">
+        <span id=keyboard>??</span>
+    </p>
+    <hr />
+    <b>Sample code</b>
+    <pre id=sample>This text is not shown. Why?</pre>
+
+    <hr />
+
+    <script>
+        "use strict";
+        // JavaScript comment
+
+        function init() {
+            navigator.getBattery().then(b => {
+                b.onchargingchange = () => charge_status.innerText =
+                 "Battery on charge?"+ (b.charging ? "Yes" : "No")
+                b.onlevelchange = () => level.innerText = (b.level * 
+                100).toFixed(0)  + '%'+'\n'+
+                "DischargingTime= "+ (b.dischargingTime/3600).toFixed(2)+
+                " remaining"
+            })
+
+            ononline = event => online.innerText 
+            = "Connected--online" 
+            onoffline = event =>online.innerText 
+            = "Disconnected--offline"
+
+            onkeydown = (event) => keyboard.innerText 
+            = event.key+ " => keyDown"
+            onkeyup = (event) => keyboard.innerText 
+            = event.key+ " => keyUp"
+        }
+
+        title.innerText = document.title;
+        sample.innerText = init + '\n';
+        init();
+    </script>
+
+</body>
+
+</html>
